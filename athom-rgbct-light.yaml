@@ -163,16 +163,17 @@ sensor:
 button:
   - platform: restart
     name: restart
+    id: restart_button
     entity_category: config
 
   - platform: factory_reset
     name: "Factory Reset"
-    id: reset
+    id: Reset
     entity_category: config
 
   - platform: safe_mode
     name: "Safe Mode"
-    id: safe_mode
+    id: safe_mode_button
     internal: false
     entity_category: config
 
@@ -315,7 +316,7 @@ script:
                 call.set_rgb(0.0, 0.0, 1.0);
                 call.perform();
             - delay: 5s
-            - button.press: reset
+            - button.press: Reset
       - lambda: |-
           id(fast_boot) += 1;
           fast_boot->loop();
