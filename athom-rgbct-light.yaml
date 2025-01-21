@@ -45,7 +45,7 @@ globals:
 select:
   - platform: template
     name: "Power On State"
-    id: "power_mode"
+    id: power_mode
     optimistic: true
     options:
       - Always Off
@@ -134,6 +134,7 @@ dashboard_import:
 binary_sensor:
   - platform: status
     name: "Status"
+    id: status_sensor
     entity_category: diagnostic
 
 sensor:
@@ -152,6 +153,7 @@ sensor:
   - platform: copy
     source_id: wifi_signal_db
     name: "WiFi Signal Percent"
+    id: wifi_signal_percent
     filters:
       - lambda: return min(max(2 * (x + 100.0), 0.0), 100.0);
     unit_of_measurement: "Signal %"
@@ -160,16 +162,17 @@ sensor:
 
 button:
   - platform: restart
-    name: "Restart"
+    name: restart
     entity_category: config
 
   - platform: factory_reset
     name: "Factory Reset"
-    id: Reset
+    id: reset
     entity_category: config
 
   - platform: safe_mode
     name: "Safe Mode"
+    id: safe_mode
     internal: false
     entity_category: config
 
@@ -224,12 +227,15 @@ text_sensor:
   - platform: wifi_info
     ip_address:
       name: "IP Address"
+      id: ip_address
       entity_category: diagnostic
     ssid:
       name: "Connected SSID"
+      id: ssid
       entity_category: diagnostic
     mac_address:
       name: "Mac Address"
+      id: mac_address
       entity_category: diagnostic
 
   #  Creates a sensor showing when the device was last restarted
@@ -243,6 +249,7 @@ text_sensor:
   #  Creates a sensor of the uptime of the device, in formatted days, hours, minutes and seconds
   - platform: template
     name: "Uptime"
+    id: uptime
     entity_category: diagnostic
     lambda: |-
       int seconds = (id(uptime_sensor).state);
@@ -308,7 +315,7 @@ script:
                 call.set_rgb(0.0, 0.0, 1.0);
                 call.perform();
             - delay: 5s
-            - button.press: Reset
+            - button.press: reset
       - lambda: |-
           id(fast_boot) += 1;
           fast_boot->loop();
